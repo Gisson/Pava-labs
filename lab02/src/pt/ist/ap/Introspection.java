@@ -3,6 +3,9 @@ package pt.ist.ap;
 import java.util.Scanner;
 import java.io.OutputStreamWriter;
 import java.io.IOException;
+import pt.ist.ap.command.*;
+import java.util.Hashtable;
+
 
 public class Introspection{
 
@@ -14,23 +17,36 @@ public class Introspection{
       osw.flush();
 
       String command = s.next();
-      while(command!="exit"){
+      Object lastResult=null;
+      Hashtable classes=new Hashtable<String,Object>();
+      while(true){
         switch(command){
           case "Class":
-            System.out.println("Not implemented!");
+            ClassCommand classy = new ClassCommand(s.next());
+            classy.execute();
+            lastResult=classy.getFound();
             break;
           case "Set":
-            System.out.println("Not implemented!");
+            if(lastResult==null){
+              help();
+              break;
+            }
+            (new SetCommand(s.next(),lastResult,classes)).execute();
             break;
           case "Get":
-            System.out.println("Not implemented!");
+            GetCommand classy2 = new GetCommand(s.next(),classes);
+            classy2.execute();
+            lastResult=classy2.getFound();
             break;
           case "Index":
-            System.out.println("Not implemented!");
+
+
             break;
           case "Help":
             System.out.println(help());
             break;
+          case "Exit":
+            System.exit(0);
           default:
             System.out.println("Command not found!");
             System.out.println(help());
