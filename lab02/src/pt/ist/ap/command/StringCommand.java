@@ -3,7 +3,7 @@ package pt.ist.ap.command;
 
 
 
-public abstract class StringCommand implements AbstractCommand{
+public abstract class StringCommand extends AbstractCommand{
   private String _arg;
 
   public StringCommand(String arg){ _arg=arg;}

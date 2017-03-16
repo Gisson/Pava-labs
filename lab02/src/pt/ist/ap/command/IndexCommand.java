@@ -1,20 +1,24 @@
 package pt.ist.ap.command;
 
 import java.lang.reflect.Array;
+import java.lang.RuntimeException;
 
-public class IndexCommand implements AbstractCommand{
-  private int _position;
+public class IndexCommand extends AbstractCommand{
+  private Integer _position;
+  private Array _arr;
 
-
-  public IndexCommand(int pos){
+  public IndexCommand(Integer pos, Object o){
     _position=pos;
+    if( o instanceof Array){
+      _arr=(Array)o;
+    }else{
+      throw new RuntimeException();
+    }
   }
 
   @Override
   public void execute(){
-    if(!(lastCommand.getClass() instanceof Array)){
-      System.out.println("I no clean!");
-      return;
-    }
+    _returnVal=Array.get(_arr,_position);
   }
+
 }

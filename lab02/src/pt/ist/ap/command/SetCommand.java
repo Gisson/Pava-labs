@@ -1,17 +1,22 @@
 package pt.ist.ap.command;
 
 import java.util.Hashtable;
+import pt.ist.ap.exceptions.*;
 
 public class SetCommand extends StringCommand{
 
   Hashtable _table;
-  Class _c;
+  Object _c;
 
-  public SetCommand(String name,Class c,Hashtable table){super(name);_table=table;_c=c;}
+  public SetCommand(String name,Object c,Hashtable table){super(name);_table=table;_c=c;}
   @Override
   public void execute(){
     _table.put(getArg(),_c);
     System.out.println("I put it in!");
-    //System.out.println(_table);
+  }
+
+  @Override
+  public Object getReturn(){
+    throw new NoReturnExpectedException();
   }
 }
