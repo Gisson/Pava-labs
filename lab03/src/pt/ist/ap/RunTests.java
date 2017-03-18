@@ -12,18 +12,42 @@ public class RunTests{
 
   public static void main(String[] argv) throws Exception{
     int passed=0,failed=0;
+    
     for(Method m : Class.forName("pt.ist.ap.tests."+argv[0]).getDeclaredMethods()){
       if(m.isAnnotationPresent(Setup.class)){
+    	
         lemonparty.put(((Setup)(m.getAnnotation(Setup.class))).value(),m);
-        System.out.println("I put it in "+ m.getName());
-        //System.out.println("I put it in "+((Setup)(m.getAnnotation(Setup.class))).value());
-      }
-      else{
-        System.out.println("I put no it in "+ m.getName());
       }
     }
 
+    for(Method m : Class.forName("pt.ist.ap.tests."+argv[0]).getDeclaredMethods()){
 
+    	if(m.isAnnotationPresent(Test.class)){
+    		String[] testArgs = ((Test)(m.getAnnotation(Test.class))).value();
+    		if(!testArgs[0].equals("")){
+    			for(String s : testArgs ){
+    				try { 
+    					Method m1 = lemonparty.get(s);
+    					m1.setAccessible(true);
+    					m1.invoke(null);
+    					m1.setAccessible(false);
+    				} catch (Throwable ex) {
+    					System.out.printf("Test %s failed: %s %n", m, ex.getCause());
+    				}
+    			}
+    		}
+    		
+    		
+        	try {
+        		m.setAccessible(true);
+        		m.invoke(null);
+        		m.setAccessible(false);
+        		passed++;
+        	} catch (Throwable ex) {
+        		System.out.printf("Test %s failed: %s %n", m, ex.getCause());
+        		failed++;
+        	}
+        }
+    }
   }
-
 }
