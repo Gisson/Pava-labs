@@ -43,11 +43,15 @@ public class RunTests{
         		m.invoke(null);
         		m.setAccessible(false);
         		passed++;
+                System.out.printf("Test %s OK! %n", m);
         	} catch (Throwable ex) {
         		System.out.printf("Test %s failed: %s %n", m, ex.getCause());
         		failed++;
         	}
         }
     }
+    
+    System.out.printf("Passed: %d, Failed %d %n", passed, failed);
+
   }
 }
